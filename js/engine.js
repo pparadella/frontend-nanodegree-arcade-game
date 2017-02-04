@@ -29,9 +29,11 @@ var Engine = (function(global) {
     canvas.height = 606;
     doc.body.appendChild(canvas);
 
+
     /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
+
     function main() {
         /* Get our time delta information which is required if your game
          * requires smooth animation. Because everyone's computer processes
@@ -56,9 +58,52 @@ var Engine = (function(global) {
         /* Use the browser's requestAnimationFrame function to call this
          * function again as soon as the browser is able to draw another frame.
          */
-        win.requestAnimationFrame(main);
+
+         //colocar o score na tela.
+        ctx.font = '26pt impact';
+        ctx.fillStyle = "black";
+        ctx.clearRect(canvas.width-156 ,0,136,36);
+        ctx.fillText("Score: ",canvas.width-90,36);
+        ctx.fillText(player.score,canvas.width-36,36);
+
+        //se Player atingiu 6 no score ele ganha senão continua a execução do main
+        if (player.score === 6){
+          youWin();
+        }else {
+          win.requestAnimationFrame(main);
+        }
+
     }
 
+    function youWin(){
+       var elemLeft = canvas.offsetLeft,
+       elemTop = canvas.offsetTop;
+
+       //colocando mensagem de vitoria na tela
+       ctx.font = '46pt impact';
+       ctx.textAlign = "center";
+       ctx.fillStyle = "black";
+       ctx.fillText("You WIN!",canvas.width/2,canvas.height/2);
+       ctx.font = '26pt impact';
+       ctx.fillStyle = "green";
+       ctx.strokeStyle = "white";
+       ctx.fillText("Play Again",canvas.width/2,(canvas.height/2)+60);
+       ctx.strokeText("Play Again",canvas.width/2,(canvas.height/2)+60);
+
+       //Evento de clique para jogar novamente
+       canvas.addEventListener('click', function myClick(e){
+         var x = e.pageX - elemLeft;
+         var y = e.pageY - elemTop;
+         //Quando o player clica no play again, reinicia o jogo e vai para a tela de escolha de characters.
+         if (y >= (canvas.height/2)+30  && y <= (canvas.height/2)+64){
+             if (x >= (canvas.width/2)-80 && x <= (canvas.width/2)+80){
+                canvas.removeEventListener('click', myClick);
+                init();
+             }
+
+         }
+       },false);
+    }
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
      * game loop.
@@ -167,7 +212,12 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
-        var game = 0;
+        //var game = 0;
+        //resetar o score
+        player.score = 0;
+        ctx.clearRect(canvas.width-156 ,0,136,36);
+        ctx.clearRect(canvas.width-56 ,0,36,36);
+
         //Para saber onde o mouse vai estar no canvas
         var elemLeft = canvas.offsetLeft,
         elemTop = canvas.offsetTop;

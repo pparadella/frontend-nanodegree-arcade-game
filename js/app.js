@@ -40,6 +40,11 @@ Enemy.prototype.update = function(dt) {
 
   //sistema de colisão
   if (this.y === player.y+9 && (this.x+70 >= player.x && this.x+70 <= player.x+101)){
+    if (player.score > 0){
+      //retirar 1 do score do player
+      player.score = player.score - 1;
+    }
+    //e resetar a fase
     reset();
   }
 
@@ -65,7 +70,8 @@ Enemy.prototype.reset = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function (){
-
+  //colocando o score inicial do player
+  this.score = 0;
   //posição inicial
   this.x = 202;
   this.y = 380;
@@ -77,6 +83,8 @@ var Player = function (){
 Player.prototype.update = function(dt) {
   //sistema caso o player consiga chegar no final da fase
   if (player.y < 48) {
+    //adicionar 1 ao score e resetar
+    this.score = this.score + 1;
     reset();
   }
 };
