@@ -46,7 +46,7 @@ var Engine = (function(global) {
          * our update function since it may be used for smooth animation.
          */
         update(dt);
-        render();
+        render("yes");
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -66,7 +66,7 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
-        main();
+        //main();
     }
 
     /* This function is called by main (our game loop) and itself calls all
@@ -103,7 +103,7 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
-    function render() {
+    function render(state) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
          */
@@ -123,6 +123,7 @@ var Engine = (function(global) {
          * and, using the rowImages array, draw the correct image for that
          * portion of the "grid"
          */
+
         for (row = 0; row < numRows; row++) {
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
@@ -136,7 +137,13 @@ var Engine = (function(global) {
             }
         }
 
-        renderEntities();
+        //para saber se renderiza a fase sem ou com os objetos
+        if (state === "no"){
+
+        }else {
+            renderEntities();
+        }
+
     }
 
     /* This function is called by the render function and is called on each game
@@ -160,6 +167,57 @@ var Engine = (function(global) {
      */
     function reset() {
         // noop
+        var game = 0;
+        //Para saber onde o mouse vai estar no canvas
+        var elemLeft = canvas.offsetLeft,
+        elemTop = canvas.offsetTop;
+
+        //renderizar a parte do fundo da fazer sem os objetos
+        render("no");
+
+        //renderizar os characters que podem ser escolhido
+        ctx.font = '36pt impact';
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText("Choose your character:",canvas.width/2,250);
+        ctx.drawImage(Resources.get("images/char-boy.png"), 0, 300);
+        ctx.drawImage(Resources.get("images/char-cat-girl.png"), 101, 300);
+        ctx.drawImage(Resources.get("images/char-horn-girl.png"), 202, 300);
+        ctx.drawImage(Resources.get("images/char-pink-girl.png"), 303, 300);
+        ctx.drawImage(Resources.get("images/char-princess-girl.png"), 404, 300);
+
+        //evento de click para saber qual character foi escolhido
+        //chama o main depois que é escolhido
+        canvas.addEventListener('click', function myClick(e) {
+          var x = e.pageX - elemLeft;
+          var y = e.pageY - elemTop;
+          if (y >= 360 && y <= 462){
+            if (x >= 0 && x <= 101){
+              player.sprite = 'images/char-boy.png';
+              main();
+              canvas.removeEventListener('click', myClick);
+            }else if (x >= 102 && x <= 202) {
+              player.sprite = 'images/char-cat-girl.png';
+              main();
+              canvas.removeEventListener('click', myClick);
+            }else if (x >= 203 && x <= 303) {
+              player.sprite = 'images/char-horn-girl.png';
+              main();
+              canvas.removeEventListener('click', myClick);
+            }else if (x >= 304 && x <= 404) {
+              player.sprite = 'images/char-pink-girl.png';
+              main();
+              canvas.removeEventListener('click', myClick);
+            }else if (x >= 404 && x <= 505) {
+              player.sprite = 'images/char-princess-girl.png';
+              main();
+              canvas.removeEventListener('click', myClick);
+            }
+          }
+
+        }, false);
+
+
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -171,7 +229,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
+
     ]);
     Resources.onReady(init);
 
