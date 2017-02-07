@@ -138,6 +138,20 @@ var Engine = (function(global) {
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
+            //se colidir retira score do player e reseta a fase
+            if (enemy.collides(player)){
+              if (player.score > 0){
+                //retirar 1 do score do player
+                player.score = player.score - 1;
+              }
+              //resetando todos os inimigos
+              allEnemies.forEach(function(enemy){
+                enemy.reset();
+              });
+              //resetando o player
+              player.reset();
+
+            }
         });
         player.update();
     }

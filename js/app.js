@@ -7,7 +7,6 @@ function randomSpeed () {
 //função para resetar a fase
 function reset () {
   allEnemies = [new Enemy(1), new Enemy(2), new Enemy(3)];
-  //player = new Player();
   player.reset();
 }
 
@@ -15,11 +14,11 @@ function reset () {
 var Enemy = function(num) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
-
+  //guardando o numero de qual linha ele deve começar
+  this.num = num
   //posição do inimigo
-  this.x = (num * 200);
-  //this.y = (Math.floor((Math.random()*3)+1)*83)-26;
-  this.y = (num * 83) - 26;
+  this.x = (this.num * 200);
+  this.y = (this.num * 83) - 26;
 
   //velocidade do inimigo
   this.speed = randomSpeed();
@@ -38,19 +37,22 @@ Enemy.prototype.update = function(dt) {
   //como o inimigo vai andar
   this.x = this.x + (this.speed*dt);
 
-  //sistema de colisão
-  if (this.y === player.y+9 && (this.x+70 >= player.x && this.x+70 <= player.x+101)){
-    if (player.score > 0){
-      //retirar 1 do score do player
-      player.score = player.score - 1;
-    }
-    //e resetar a fase
-    reset();
-  }
+
+
+
 
   //caso fique fora da tela ele volta para o inicio e com uma velocidade diferente
   if (this.x > 505){
-    this.reset();
+    this.goBack();
+  }
+};
+
+//sistema de colisão
+Enemy.prototype.collides = function (obj){
+  //sistema de colisão
+  if (this.y === obj.y+9 && (this.x+70 >= obj.x && this.x+70 <= obj.x+101)){
+
+    return true;
   }
 };
 
@@ -59,11 +61,16 @@ Enemy.prototype.render = function() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Enemy.prototype.reset = function() {
-  //sistema de reset quando ele fica fora da tela
+Enemy.prototype.goBack = function() {
+  //sistema de voltar quando ele fica fora da tela
   this.x = -101;
-  //this.y = (Math.floor((Math.random()*3)+1)*83)-26;
   this.speed = randomSpeed();
+};
+
+//sistema de resetar
+Enemy.prototype.reset = function() {
+  this.x = (this.num * 200);
+  this.y = (this.num * 83) - 26;
 };
 
 // Now write your own player class
@@ -119,9 +126,7 @@ Player.prototype.reset = function() {
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-//var allEnemies = [new Enemy(1), new Enemy(2), new Enemy(3)];
 // Place the player object in a variable called player
-//var player = new Player();
 var player = new Player();
 reset();
 
