@@ -15,10 +15,12 @@ var Enemy = function(num) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
   //guardando o numero de qual linha ele deve começar
-  this.num = num
+  //this.num = num;
   //posição do inimigo
-  this.x = (this.num * 200);
-  this.y = (this.num * 83) - 26;
+  this.ENEMY_START_X = (num * 200);
+  this.ENEMY_START_Y = (num * 83) - 26;
+  this.x = this.ENEMY_START_X;
+  this.y = this.ENEMY_START_Y;
 
   //velocidade do inimigo
   this.speed = randomSpeed();
@@ -69,8 +71,8 @@ Enemy.prototype.goBack = function() {
 
 //sistema de resetar
 Enemy.prototype.reset = function() {
-  this.x = (this.num * 200);
-  this.y = (this.num * 83) - 26;
+  this.x = this.ENEMY_START_X;
+  this.y = this.ENEMY_START_Y;
 };
 
 // Now write your own player class
@@ -80,8 +82,10 @@ var Player = function (){
   //colocando o score inicial do player
   this.score = 0;
   //posição inicial
-  this.x = 202;
-  this.y = 380;
+  this.PLAYER_START_X = 202;
+  this.PLAYER_START_Y = 380;
+  this.x = this.PLAYER_START_X;
+  this.y = this.PLAYER_START_Y;
 
   //sprite default
   this.sprite = 'images/char-boy.png';
@@ -120,8 +124,8 @@ Player.prototype.handleInput = function(e) {
 
 //metodo para resetar o player na posição inicial
 Player.prototype.reset = function() {
-  this.x = 202;
-  this.y = 380;
+  this.x = this.PLAYER_START_X;
+  this.y = this.PLAYER_START_Y;
 }
 
 // Now instantiate your objects.
