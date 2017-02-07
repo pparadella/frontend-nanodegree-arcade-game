@@ -162,6 +162,9 @@ var Engine = (function(global) {
      * they are flipbooks creating the illusion of animation but in reality
      * they are just drawing the entire screen over and over.
      */
+     //Renderizar a fase com ou sem os objetos
+     //state = "yes" tem objetos
+     //state = "no" não tem objetos
     function render(state) {
         /* This array holds the relative URL to the image used
          * for that particular row of the game level.
@@ -209,6 +212,21 @@ var Engine = (function(global) {
      * tick. Its purpose is to then call the render functions you have defined
      * on your enemy and player entities within app.js
      */
+    function renderTitleScreen(){
+        //renderizar a parte do fundo da fazer sem os objetos
+        render("no");
+
+        //renderizar os characters que podem ser escolhido
+        ctx.font = '36pt impact';
+        ctx.textAlign = "center";
+        ctx.fillStyle = "black";
+        ctx.fillText("Choose your character:",canvas.width/2,250);
+        ctx.drawImage(Resources.get("images/char-boy.png"), 0, 300);
+        ctx.drawImage(Resources.get("images/char-cat-girl.png"), 101, 300);
+        ctx.drawImage(Resources.get("images/char-horn-girl.png"), 202, 300);
+        ctx.drawImage(Resources.get("images/char-pink-girl.png"), 303, 300);
+        ctx.drawImage(Resources.get("images/char-princess-girl.png"), 404, 300);
+    }
     function renderEntities() {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
@@ -236,19 +254,8 @@ var Engine = (function(global) {
         var elemLeft = canvas.offsetLeft,
         elemTop = canvas.offsetTop;
 
-        //renderizar a parte do fundo da fazer sem os objetos
-        render("no");
-
-        //renderizar os characters que podem ser escolhido
-        ctx.font = '36pt impact';
-        ctx.textAlign = "center";
-        ctx.fillStyle = "black";
-        ctx.fillText("Choose your character:",canvas.width/2,250);
-        ctx.drawImage(Resources.get("images/char-boy.png"), 0, 300);
-        ctx.drawImage(Resources.get("images/char-cat-girl.png"), 101, 300);
-        ctx.drawImage(Resources.get("images/char-horn-girl.png"), 202, 300);
-        ctx.drawImage(Resources.get("images/char-pink-girl.png"), 303, 300);
-        ctx.drawImage(Resources.get("images/char-princess-girl.png"), 404, 300);
+        //renderizar a tela de titulo
+        renderTitleScreen();
 
         //evento de click para saber qual character foi escolhido
         //chama o main depois que é escolhido
