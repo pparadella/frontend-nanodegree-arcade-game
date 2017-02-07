@@ -82,7 +82,7 @@ var Player = function (){
 
 Player.prototype.update = function(dt) {
   //sistema caso o player consiga chegar no final da fase
-  if (player.y < 48) {
+  if (this.y < 48) {
     //adicionar 1 ao score e resetar
     this.score = this.score + 1;
     reset();
